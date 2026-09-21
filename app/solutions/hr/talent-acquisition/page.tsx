@@ -1,4 +1,4 @@
-import SolutionWorkflowPage from "@/components/solutions/SolutionWorkflowPage";
+ import SolutionWorkflowPage from "@/components/solutions/SolutionWorkflowPage";
 import { ALL_TA_PLUGINS, TA_STAGES } from "@/lib/solutions/hr-workflows";
 
 export const metadata = {

@@ -228,66 +228,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TRUSTED BY */}
-      <section className="mt-3 rounded-2xl border border-white/12 bg-black px-6 py-8 sm:px-10 sm:py-9">
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60 mb-8">
-          Trusted by
-        </p>
+    {/* TRUSTED BY */}
+<section className="mt-3 rounded-2xl border border-white/12 bg-black px-6 py-8 sm:px-10 sm:py-9">
+  <p className="mb-8 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
+    Trusted by
+  </p>
 
-        {/* Logo row — three logos separated by subtle dividers */}
-        <div className="flex flex-wrap items-center justify-center gap-0 divide-x divide-white/10">
+  <div className="flex flex-wrap items-center justify-center gap-0 divide-x divide-white/10">
 
-          {/* Brand For You */}
-          <div className="flex items-center gap-3 px-8 sm:px-12 py-2 shrink-0">
-            {/* Icon mark — abstract B shape */}
-            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-              <rect width="26" height="26" rx="5" fill="#E8453C" opacity="0.15"/>
-              <path
-                d="M8 6h5.5a3.5 3.5 0 0 1 0 7H8V6zm0 7h6a3.5 3.5 0 0 1 0 7H8v-7z"
-                fill="#E8453C"
-              />
-            </svg>
-            <div className="leading-tight">
-              <p className="text-[14px] font-semibold text-white tracking-tight">Brand For You</p>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">Your Brand, Our Passion</p>
-            </div>
-          </div>
+    {/* Brand For You */}
+    <div className="flex min-w-[180px] items-center justify-center px-8 py-3 sm:px-12">
+      <Image
+        src="/logos/brandforyou.svg"
+        alt="Brand For You"
+        width={150}
+        height={50}
+        className="h-10 w-auto max-w-[150px] object-contain"
+      />
+    </div>
 
-          {/* Sapience */}
-          <div className="flex items-center gap-3 px-8 sm:px-12 py-2 shrink-0">
-            {/* Icon mark — abstract S/L ligature */}
-            <svg width="22" height="26" viewBox="0 0 22 26" fill="none" aria-hidden="true">
-              <path
-                d="M6 2C6 2 2 6 2 11c0 4 3 6 6 6s6-2 6-6c0 5 3 9 3 13"
-                stroke="#9B59B6"
-                strokeWidth="3"
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
-            <p className="text-[18px] font-semibold tracking-tight" style={{ color: "#9B59B6" }}>
-              Sapience
-            </p>
-          </div>
+    {/* Sapience */}
+    <div className="flex min-w-[180px] items-center justify-center px-8 py-3 sm:px-12">
+      <Image
+        src="/logos/sapience.svg"
+        alt="Sapience"
+        width={150}
+        height={50}
+        className="h-10 w-auto max-w-[150px] object-contain"
+      />
+    </div>
 
-          {/* roundz.ai */}
-          <div className="flex items-center gap-3 px-8 sm:px-12 py-2 shrink-0">
-            {/* Icon mark — scissors / connected nodes */}
-            <svg width="26" height="22" viewBox="0 0 26 22" fill="none" aria-hidden="true">
-              <circle cx="4"  cy="4"  r="3.5" stroke="#2EAFD4" strokeWidth="1.8"/>
-              <circle cx="22" cy="4"  r="3.5" stroke="#2EAFD4" strokeWidth="1.8"/>
-              <circle cx="13" cy="18" r="3.5" stroke="#2EAFD4" strokeWidth="1.8"/>
-              <line x1="7"  y1="5.5" x2="19" y2="5.5" stroke="#2EAFD4" strokeWidth="1.4" strokeDasharray="2 2"/>
-              <line x1="5.5" y1="7"  x2="11" y2="15" stroke="#2EAFD4" strokeWidth="1.4" strokeDasharray="2 2"/>
-              <line x1="20.5" y1="7" x2="15" y2="15" stroke="#2EAFD4" strokeWidth="1.4" strokeDasharray="2 2"/>
-            </svg>
-            <p className="text-[18px] font-semibold tracking-tight" style={{ color: "#2EAFD4" }}>
-              roundz.ai
-            </p>
-          </div>
+    {/* roundz.ai */}
+    <div className="flex min-w-[180px] items-center justify-center px-8 py-3 sm:px-12">
+      <Image
+        src="/logos/roundaisvg.svg"
+        alt="roundz.ai"
+        width={150}
+        height={50}
+        className="h-10 w-auto max-w-[150px] object-contain"
+      />
+    </div>
 
-        </div>
-      </section>
+  </div>
+</section>
 
       {/* PLATFORM CAPABILITIES */}
       <AgentRailSection />
