@@ -27,19 +27,19 @@ export default function SigninFlow() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold text-slate-900 mb-1.5 tracking-tight text-center">
+      <h1 className="text-2xl font-semibold text-white mb-1.5 tracking-tight text-center">
         Sign in to SoloBuildAI
       </h1>
-      <p className="text-sm text-slate-500 mb-8 text-center">
+      <p className="text-sm text-slate-400 mb-8 text-center">
         Don&apos;t have an account?{" "}
-        <a href="/signup" className="text-blue-600 hover:underline font-medium">
+        <a href="/signup" className="text-[#0066FF] hover:underline font-medium">
           Sign up
         </a>
       </p>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="signin-email" className="text-sm font-medium text-slate-700">
+          <label htmlFor="signin-email" className="text-sm font-medium text-slate-300">
             Work email
           </label>
           <input
@@ -50,9 +50,9 @@ export default function SigninFlow() {
             autoComplete="email"
             value={email}
             onChange={(e) => { setEmail(e.target.value); setError(""); }}
-            className={`w-full rounded-lg border px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 bg-white outline-none transition-all
-              focus:ring-2 focus:ring-blue-500 focus:border-transparent
-              ${error ? "border-red-400 focus:ring-red-400" : "border-slate-200 hover:border-slate-300"}`}
+            className={`w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-slate-500 bg-white/5 outline-none transition-all
+              focus:ring-2 focus:ring-[#0066FF] focus:border-transparent
+              ${error ? "border-red-400 focus:ring-red-400" : "border-white/15 hover:border-white/25"}`}
           />
           {error && <p className="text-xs text-red-500">{error}</p>}
         </div>
@@ -60,7 +60,7 @@ export default function SigninFlow() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors flex items-center justify-center gap-2"
+          className="w-full py-3 bg-[#0066FF] text-white text-sm font-medium rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors flex items-center justify-center gap-2"
         >
           {loading ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -74,14 +74,14 @@ export default function SigninFlow() {
 
       <div className="mt-6">
         <div className="relative flex items-center gap-3">
-          <div className="flex-1 h-px bg-slate-200" />
-          <span className="text-xs text-slate-400 flex-shrink-0">or continue with</span>
-          <div className="flex-1 h-px bg-slate-200" />
+          <div className="flex-1 h-px bg-white/10" />
+          <span className="text-xs text-slate-500 flex-shrink-0">or continue with</span>
+          <div className="flex-1 h-px bg-white/10" />
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             type="button"
-            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-white/15 rounded-lg text-sm font-medium text-white/80 hover:bg-white/5 transition-colors"
             onClick={() => window.open(SIGN_IN_URL, "_blank", "noopener,noreferrer")}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ export default function SigninFlow() {
           </button>
           <button
             type="button"
-            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-white/15 rounded-lg text-sm font-medium text-white/80 hover:bg-white/5 transition-colors"
             onClick={() => window.open(SIGN_IN_URL, "_blank", "noopener,noreferrer")}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export default function SigninFlow() {
         </div>
       </div>
 
-      <p className="text-xs text-slate-400 mt-6 text-center">
+      <p className="text-xs text-slate-500 mt-6 text-center">
         You&apos;ll be taken to the SoloBuildAI platform to complete sign in.
       </p>
     </div>
