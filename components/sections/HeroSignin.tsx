@@ -22,34 +22,37 @@ export default function HeroSignin() {
         {/* Dark gradient overlay so text stays readable */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/20" />
 
-        {/* Left: headline + features, overlaid top-left */}
-        <div className="absolute inset-y-0 left-0 flex flex-col justify-center px-14 py-16 max-w-[560px]">
-          <p className="text-[11px] font-medium tracking-[0.22em] uppercase text-slate-400 mb-8">
-            AI Agents for real work
-          </p>
-          <h1 className="mb-7">
-            <span className="block text-[80px] leading-[0.92] font-semibold tracking-[-0.04em] text-white">
-              Ideas
-            </span>
-            <span className="block text-[80px] leading-[0.92] font-semibold tracking-[-0.04em]">
-              <span className="text-white">to </span>
-              <span className="text-[#0066FF]">Impact.</span>
-            </span>
-          </h1>
-          <p className="text-[15px] leading-[1.7] text-slate-300 mb-9 max-w-[420px]">
-            Build, deploy and scale AI agents, workflows and tools to turn your ideas into real outcomes — without the usual complexity.
-          </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-slate-400 font-mono">
-            <span>// No coding required</span>
-            <span>// Ready-to-use agents</span>
-            <span>// Built for real hiring</span>
+        {/* Constrained inner layout so both columns sit closer together */}
+        <div className="absolute inset-0 flex items-center justify-between max-w-6xl mx-auto w-full px-10 py-16">
+          {/* Left: headline + features */}
+          <div className="flex flex-col justify-center max-w-[500px]">
+            <p className="text-[11px] font-medium tracking-[0.22em] uppercase text-slate-400 mb-8">
+              AI Agents for real work
+            </p>
+            <h1 className="mb-7">
+              <span className="block text-[80px] leading-[0.92] font-semibold tracking-[-0.04em] text-white">
+                Ideas
+              </span>
+              <span className="block text-[80px] leading-[0.92] font-semibold tracking-[-0.04em]">
+                <span className="text-white">to </span>
+                <span className="text-[#0066FF]">Impact.</span>
+              </span>
+            </h1>
+            <p className="text-[15px] leading-[1.7] text-slate-300 mb-9 max-w-[420px]">
+              Build, deploy and scale AI agents, workflows and tools to turn your ideas into real outcomes — without the usual complexity.
+            </p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-slate-400 font-mono">
+              <span>// No coding required</span>
+              <span>// Ready-to-use agents</span>
+              <span>// Built for real hiring</span>
+            </div>
           </div>
-        </div>
 
-        {/* Right: auth card floating over the image */}
-        <div className="absolute inset-y-0 right-0 flex items-center justify-center px-14 py-16">
-          <div className="w-full max-w-md bg-[#0A0A0A]/80 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-2xl">
-            <SigninFlow />
+          {/* Right: auth card */}
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-md bg-[#0A0A0A]/80 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-2xl">
+              <SigninFlow />
+            </div>
           </div>
         </div>
       </div>
