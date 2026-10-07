@@ -32,7 +32,7 @@ export default function SignupPage() {
         </Link>
       </header>
 
-      {/* Main — centering handled inside SignupFlow */}
+      {/* Main */}
       <main className="flex-1 flex items-center justify-center px-4 py-10">
         <SignupFlow />
       </main>

@@ -5,20 +5,6 @@ import Link from "next/link";
 
 const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
 
-/* ─── Types ─────────────────────────────────────────────────────────── */
-type FormData = {
-  fullName: string;
-  email: string;
-  password: string;
-  company: string;
-  industry: string;
-  volume: string;
-  services: string[];
-  notes: string;
-};
-
-type Errors = Partial<Record<"fullName" | "email" | "password" | "company", string>>;
-
 /* ─── Helpers ────────────────────────────────────────────────────────── */
 function isValidEmail(e: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
@@ -39,10 +25,11 @@ function EyeIcon({ open }: { open: boolean }) {
 }
 
 const SERVICE_OPTIONS = [
-  "AI Hiring & Voice Screening",
-  "Sales Outreach & Voice AI",
-  "Customer Support Automation",
-  "Custom Workflow & MCP Integrations",
+  "Hiring",
+  "Sales",
+  "IT Support",
+  "Customer Support",
+  "Customized Solution",
 ];
 
 const inputClass =
@@ -50,59 +37,51 @@ const inputClass =
 
 const labelClass = "text-sm font-medium text-white/70 mb-1.5 block";
 
-const sectionHeadingClass =
-  "text-xs font-semibold uppercase tracking-widest text-white/40 mb-4";
-
 /* ─── Root ───────────────────────────────────────────────────────────── */
 export default function SignupFlow() {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const [form, setForm] = useState<FormData>({
-    fullName: "",
-    email: "",
-    password: "",
-    company: "",
-    industry: "",
-    volume: "",
-    services: [],
-    notes: "",
-  });
-
-  const [errors, setErrors] = useState<Errors>({});
+  /* ── Field state ── */
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [company, setCompany] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [volume, setVolume] = useState("");
+  const [useCase, setUseCase] = useState("");
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  function handleField(field: keyof FormData, value: string) {
-    setForm((p) => ({ ...p, [field]: value }));
-    if (field in errors) {
-      setErrors((p) => ({ ...p, [field]: undefined }));
-    }
-  }
-
   function toggleService(service: string) {
-    setForm((p) => ({
-      ...p,
-      services: p.services.includes(service)
-        ? p.services.filter((s) => s !== service)
-        : [...p.services, service],
-    }));
+    setSelectedServices((prev) =>
+      prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service]
+    );
   }
 
-  function validate(): Errors {
-    const e: Errors = {};
-    if (!form.fullName.trim()) e.fullName = "Full name is required.";
-    if (!form.email.trim()) {
-      e.email = "Work email is required.";
-    } else if (!isValidEmail(form.email)) {
-      e.email = "Enter a valid email address.";
+  function validate(): Record<string, string> {
+    const errs: Record<string, string> = {};
+    if (!fullName.trim()) errs.fullName = "Full name is required.";
+    if (!email.trim()) {
+      errs.email = "Work email is required.";
+    } else if (!isValidEmail(email)) {
+      errs.email = "Enter a valid email address.";
     }
-    if (!form.password) {
-      e.password = "Password is required.";
-    } else if (form.password.length < 8) {
-      e.password = "Minimum 8 characters.";
+    if (!password) {
+      errs.password = "Password is required.";
+    } else if (password.length < 8) {
+      errs.password = "Minimum 8 characters.";
     }
-    if (!form.company.trim()) e.company = "Company name is required.";
-    return e;
+    if (!confirmPassword) {
+      errs.confirmPassword = "Please confirm your password.";
+    } else if (confirmPassword !== password) {
+      errs.confirmPassword = "Passwords do not match.";
+    }
+    if (!company.trim()) errs.company = "Company name is required.";
+    return errs;
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -113,253 +92,297 @@ export default function SignupFlow() {
       cardRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    console.log("SignupFlow submission:", form);
+    console.log("SignupFlow submission:", {
+      fullName,
+      email,
+      password,
+      confirmPassword,
+      company,
+      industry,
+      volume,
+      useCase,
+      selectedServices,
+    });
     setSubmitted(true);
   }
 
   /* ── Success state ── */
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-2xl bg-[#0A0A0A] border border-white/10 rounded-xl shadow-2xl px-8 py-16 flex flex-col items-center text-center">
-          <div className="w-14 h-14 rounded-full bg-[#0066FF]/10 border border-[#0066FF]/20 flex items-center justify-center mb-6">
-            <svg className="w-7 h-7 text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-semibold text-white mb-2">You&apos;re on the list!</h2>
-          <p className="text-sm text-white/50 mb-8">
-            We&apos;ll be in touch within 1 business day.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white text-sm font-semibold rounded-lg transition-colors"
-          >
-            Back to Home
-          </Link>
+      <div className="w-full max-w-4xl mx-auto bg-[#0A0A0A] border border-white/10 rounded-xl shadow-2xl px-8 py-16 flex flex-col items-center text-center">
+        <div className="w-14 h-14 rounded-full bg-[#0066FF]/10 border border-[#0066FF]/20 flex items-center justify-center mb-6">
+          <svg className="w-7 h-7 text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
         </div>
+        <h2 className="text-2xl font-semibold text-white mb-2">You&apos;re on the list!</h2>
+        <p className="text-sm text-white/50 mb-8">We&apos;ll be in touch within 1 business day.</p>
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center px-6 py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white text-sm font-semibold rounded-lg transition-colors"
+        >
+          Back to Home
+        </Link>
       </div>
     );
   }
 
   /* ── Form ── */
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-2xl bg-[#0A0A0A] border border-white/10 rounded-xl shadow-2xl">
-        <div
-          ref={cardRef}
-          className="px-8 py-10 max-h-[85vh] overflow-y-auto"
-        >
-          {/* Card header */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-white mb-1">
-              Create your account
-            </h1>
-            <p className="text-sm text-white/50">
-              Tell us about yourself and what you&apos;re building.
+    <div className="w-full max-w-4xl mx-auto bg-[#0A0A0A] border border-white/10 rounded-xl shadow-2xl flex flex-col">
+      <div ref={cardRef} className="max-h-[80vh] overflow-y-auto p-8 space-y-8">
+
+        {/* Card header */}
+        <div>
+          <h1 className="text-2xl font-semibold text-white mb-1">Create your account</h1>
+          <p className="text-sm text-white/50">Tell us about yourself and what you&apos;re building.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} noValidate className="space-y-8">
+
+          {/* ── Section 1: Account Details ── */}
+          <div>
+            <h3 className="text-sm font-semibold text-white border-b border-white/10 pb-2 mb-4">
+              Account Details
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              {/* Full Name */}
+              <div>
+                <label htmlFor="fullName" className={labelClass}>
+                  Full Name <span className="text-red-400">*</span>
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  placeholder="Jane Smith"
+                  autoComplete="name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className={`${inputClass}${errors.fullName ? " border-red-500/50 focus:ring-red-500" : ""}`}
+                />
+                {errors.fullName && <p className="text-xs text-red-400 mt-1">{errors.fullName}</p>}
+              </div>
+
+              {/* Work Email */}
+              <div>
+                <label htmlFor="email" className={labelClass}>
+                  Work Email <span className="text-red-400">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="you@company.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`${inputClass}${errors.email ? " border-red-500/50 focus:ring-red-500" : ""}`}
+                />
+                {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className={labelClass}>
+                  Password <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPass ? "text" : "password"}
+                    placeholder="Minimum 8 characters"
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`${inputClass} pr-11${errors.password ? " border-red-500/50 focus:ring-red-500" : ""}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPass((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                    tabIndex={-1}
+                    aria-label={showPass ? "Hide password" : "Show password"}
+                  >
+                    <EyeIcon open={showPass} />
+                  </button>
+                </div>
+                {errors.password && <p className="text-xs text-red-400 mt-1">{errors.password}</p>}
+              </div>
+
+              {/* Confirm Password */}
+              <div>
+                <label htmlFor="confirmPassword" className={labelClass}>
+                  Confirm Password <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPass ? "text" : "password"}
+                    placeholder="Repeat password"
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className={`${inputClass} pr-11${errors.confirmPassword ? " border-red-500/50 focus:ring-red-500" : ""}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPass((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                    tabIndex={-1}
+                    aria-label={showConfirmPass ? "Hide confirm password" : "Show confirm password"}
+                  >
+                    <EyeIcon open={showConfirmPass} />
+                  </button>
+                </div>
+                {errors.confirmPassword && <p className="text-xs text-red-400 mt-1">{errors.confirmPassword}</p>}
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Divider ── */}
+          <div className="border-t border-white/10" />
+
+          {/* ── Section 2: Company Context ── */}
+          <div>
+            <h3 className="text-sm font-semibold text-white border-b border-white/10 pb-2 mb-4">
+              Company Context
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              {/* Company Name */}
+              <div>
+                <label htmlFor="company" className={labelClass}>
+                  Company / Organization Name <span className="text-red-400">*</span>
+                </label>
+                <input
+                  id="company"
+                  type="text"
+                  placeholder="Acme Corp"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  className={`${inputClass}${errors.company ? " border-red-500/50 focus:ring-red-500" : ""}`}
+                />
+                {errors.company && <p className="text-xs text-red-400 mt-1">{errors.company}</p>}
+              </div>
+
+              {/* Industry */}
+              <div>
+                <label htmlFor="industry" className={labelClass}>
+                  Industry
+                </label>
+                <input
+                  id="industry"
+                  type="text"
+                  placeholder="e.g. Technology, Healthcare, Finance"
+                  value={industry}
+                  onChange={(e) => setIndustry(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+
+              {/* Volume */}
+              <div>
+                <label htmlFor="volume" className={labelClass}>
+                  Expected Monthly Call Volume
+                </label>
+                <select
+                  id="volume"
+                  value={volume}
+                  onChange={(e) => setVolume(e.target.value)}
+                  className={inputClass}
+                >
+                  <option value="" disabled>Select volume range</option>
+                  <option value="1-500">1 – 500 calls/month</option>
+                  <option value="500-2500">500 – 2,500 calls/month</option>
+                  <option value="2500-10000">2,500 – 10,000 calls/month</option>
+                  <option value="10000+">10,000+ calls/month</option>
+                </select>
+              </div>
+
+              {/* Primary Use Case */}
+              <div>
+                <label htmlFor="useCase" className={labelClass}>
+                  Primary Use Case
+                </label>
+                <select
+                  id="useCase"
+                  value={useCase}
+                  onChange={(e) => setUseCase(e.target.value)}
+                  className={inputClass}
+                >
+                  <option value="" disabled>Select use case</option>
+                  <option value="internal-hr">Internal HR</option>
+                  <option value="recruiting-agency">Recruiting Agency</option>
+                  <option value="sales">Sales</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Divider ── */}
+          <div className="border-t border-white/10" />
+
+          {/* ── Section 3: AI Requirements ── */}
+          <div>
+            <h3 className="text-sm font-semibold text-white border-b border-white/10 pb-2 mb-4">
+              AI Requirements
+            </h3>
+            <p className="text-sm text-white/60 mb-4">Select the primary AI workflows you need:</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {SERVICE_OPTIONS.map((service) => (
+                <label key={service} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedServices.includes(service)}
+                    onChange={() => toggleService(service)}
+                    className="accent-[#0066FF] w-4 h-4 rounded"
+                  />
+                  <span className="text-sm text-white/80">{service}</span>
+                </label>
+              ))}
+            </div>
+
+            {selectedServices.includes("Customized Solution") && (
+              <div className="mt-4 p-4 rounded-lg border border-[#0066FF]/30 bg-[#0066FF]/10 text-blue-100 text-sm flex items-center gap-3">
+                <svg
+                  className="w-5 h-5 text-[#0066FF] flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Our team will connect with you shortly to gather your specific requirements and scope your customized workflow.
+              </div>
+            )}
+          </div>
+
+          {/* ── Submit ── */}
+          <div className="pt-2 space-y-4">
+            <button
+              type="submit"
+              className="w-full py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              Complete Registration &amp; Request Access
+            </button>
+            <p className="text-sm text-center text-white/40">
+              Already have an account?{" "}
+              <a href={SIGN_IN_URL} className="text-[#0066FF] hover:underline">
+                Sign in
+              </a>
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-8">
-
-            {/* ── Section 1: Account Details ── */}
-            <div>
-              <p className={sectionHeadingClass}>Account Details</p>
-              <div className="space-y-5">
-                {/* Full Name */}
-                <div>
-                  <label htmlFor="fullName" className={labelClass}>
-                    Full Name <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    id="fullName"
-                    type="text"
-                    placeholder="Jane Smith"
-                    autoComplete="name"
-                    value={form.fullName}
-                    onChange={(e) => handleField("fullName", e.target.value)}
-                    className={`${inputClass} ${errors.fullName ? "border-red-500/50 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.fullName && (
-                    <p className="text-xs text-red-400 mt-1">{errors.fullName}</p>
-                  )}
-                </div>
-
-                {/* Work Email */}
-                <div>
-                  <label htmlFor="email" className={labelClass}>
-                    Work Email <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="you@company.com"
-                    autoComplete="email"
-                    value={form.email}
-                    onChange={(e) => handleField("email", e.target.value)}
-                    className={`${inputClass} ${errors.email ? "border-red-500/50 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-red-400 mt-1">{errors.email}</p>
-                  )}
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label htmlFor="password" className={labelClass}>
-                    Password <span className="text-red-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      type={showPass ? "text" : "password"}
-                      placeholder="Minimum 8 characters"
-                      autoComplete="new-password"
-                      value={form.password}
-                      onChange={(e) => handleField("password", e.target.value)}
-                      className={`${inputClass} pr-11 ${errors.password ? "border-red-500/50 focus:ring-red-500" : ""}`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPass((v) => !v)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
-                      tabIndex={-1}
-                      aria-label={showPass ? "Hide password" : "Show password"}
-                    >
-                      <EyeIcon open={showPass} />
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="text-xs text-red-400 mt-1">{errors.password}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* ── Divider ── */}
-            <div className="border-t border-white/10" />
-
-            {/* ── Section 2: Company Context ── */}
-            <div>
-              <p className={sectionHeadingClass}>Company Context</p>
-              <div className="space-y-5">
-                {/* Company Name */}
-                <div>
-                  <label htmlFor="company" className={labelClass}>
-                    Company / Organization Name <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    id="company"
-                    type="text"
-                    placeholder="Acme Corp"
-                    autoComplete="organization"
-                    value={form.company}
-                    onChange={(e) => handleField("company", e.target.value)}
-                    className={`${inputClass} ${errors.company ? "border-red-500/50 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.company && (
-                    <p className="text-xs text-red-400 mt-1">{errors.company}</p>
-                  )}
-                </div>
-
-                {/* Industry */}
-                <div>
-                  <label htmlFor="industry" className={labelClass}>
-                    Industry
-                  </label>
-                  <input
-                    id="industry"
-                    type="text"
-                    placeholder="e.g. Technology, Healthcare, Finance"
-                    value={form.industry}
-                    onChange={(e) => handleField("industry", e.target.value)}
-                    className={inputClass}
-                  />
-                </div>
-
-                {/* Volume */}
-                <div>
-                  <label htmlFor="volume" className={labelClass}>
-                    Expected Monthly Call / Screening Volume
-                  </label>
-                  <select
-                    id="volume"
-                    value={form.volume}
-                    onChange={(e) => handleField("volume", e.target.value)}
-                    className={inputClass}
-                  >
-                    <option value="" disabled>
-                      Select volume range
-                    </option>
-                    <option value="1-500">1 – 500 calls/month</option>
-                    <option value="500-2500">500 – 2,500 calls/month</option>
-                    <option value="2500-10000">2,500 – 10,000 calls/month</option>
-                    <option value="10000+">10,000+ calls/month</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Divider ── */}
-            <div className="border-t border-white/10" />
-
-            {/* ── Section 3: AI Requirements ── */}
-            <div>
-              <p className={sectionHeadingClass}>AI Requirements &amp; Services Needed</p>
-              <div className="space-y-5">
-                {/* Checkboxes */}
-                <div className="space-y-3">
-                  {SERVICE_OPTIONS.map((service) => (
-                    <label key={service} className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={form.services.includes(service)}
-                        onChange={() => toggleService(service)}
-                        className="accent-[#0066FF] w-4 h-4 rounded"
-                      />
-                      <span className="text-sm text-white/80">{service}</span>
-                    </label>
-                  ))}
-                </div>
-
-                {/* Notes */}
-                <div>
-                  <label htmlFor="notes" className={labelClass}>
-                    Additional Notes / Custom Requirements{" "}
-                    <span className="text-white/30 font-normal">(optional)</span>
-                  </label>
-                  <textarea
-                    id="notes"
-                    rows={4}
-                    placeholder="Any specific requirements or context..."
-                    value={form.notes}
-                    onChange={(e) => handleField("notes", e.target.value)}
-                    className={`${inputClass} resize-none`}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* ── Submit ── */}
-            <div className="pt-2 space-y-4">
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
-              >
-                Complete Registration
-              </button>
-              <p className="text-sm text-center text-white/40">
-                Already have an account?{" "}
-                <a
-                  href={SIGN_IN_URL}
-                  className="text-[#0066FF] hover:underline"
-                >
-                  Sign in
-                </a>
-              </p>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
   );
