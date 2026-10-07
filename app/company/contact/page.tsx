@@ -1,5 +1,6 @@
 import PageLayout from "@/components/layout/PageLayout";
 import ContactForm from "./ContactForm";
+import EnquiryForm from "@/components/forms/EnquiryForm";
 
 export const metadata = { title: "Contact — SoloBuildAI" };
 
@@ -49,6 +50,24 @@ export default function ContactPage() {
                 <ContactForm />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section className="py-20 bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-10">
+              <span className="text-xs font-semibold tracking-widest uppercase text-blue-500 block mb-3">
+                Direct Enquiry
+              </span>
+              <h2 className="text-3xl font-semibold text-white mb-3">
+                Send us a detailed message
+              </h2>
+              <p className="text-slate-400 text-sm">
+                For custom AI projects, enterprise pricing, or partnership enquiries.
+              </p>
+            </div>
+            <EnquiryForm />
           </div>
         </div>
       </section>
