@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import BrandLogo from "@/components/layout/BrandLogo";
 
 const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
 
@@ -131,6 +132,11 @@ export default function SignupFlow() {
   return (
     <div className="w-full max-w-4xl mx-auto bg-[#0A0A0A] border border-white/10 rounded-xl shadow-2xl flex flex-col">
       <div ref={cardRef} className="max-h-[80vh] overflow-y-auto p-8 space-y-8">
+
+        {/* Brand logo */}
+        <div className="flex justify-center mb-8">
+          <BrandLogo />
+        </div>
 
         {/* Card header */}
         <div>
