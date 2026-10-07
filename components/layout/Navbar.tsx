@@ -833,9 +833,9 @@ function MobileMenu({ open, onClose, dark, onToggleTheme }: { open: boolean; onC
       </div>
 
       <div className={`border-t px-4 py-4 flex flex-col gap-3 ${dark ? "border-white/10" : "border-slate-200"}`}>
-        <Link href="/signup" onClick={onClose} className={`w-full px-4 py-3 text-sm font-medium text-center transition-colors rounded-xl border ${dark ? "text-white border-white/15 hover:border-white/30" : "text-slate-900 border-slate-300 hover:border-slate-500"}`}>
-          Sign Up
-        </Link>
+        <a href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173'}/signin`} onClick={onClose} className={`w-full px-4 py-3 text-sm font-medium text-center transition-all rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white`}>
+          Sign In / Sign Up
+        </a>
         <button onClick={onToggleTheme} className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-center transition-colors rounded-xl ${dark ? "text-white hover:bg-white/5" : "text-slate-900 hover:bg-slate-100"}`}>
           <ThemeIcon dark={dark} />
           {dark ? "Light mode" : "Dark mode"}
@@ -952,12 +952,12 @@ export default function Navbar({ framed = false }: { framed?: boolean }) {
 
       {/* ── Desktop right ────────────────────────────────────────────── */}
       <div className="hidden lg:flex items-center gap-3">
-        <Link
-          href="/signup"
-          className={`inline-flex items-center px-3 py-2 text-[13px] font-medium rounded-lg transition-colors ${dark ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-900"}`}
+        <a
+          href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173'}/signin`}
+          className="inline-flex items-center px-4 py-2 text-[13px] font-medium rounded-lg transition-all bg-[#0066FF] hover:bg-[#0052CC] text-white"
         >
-          Sign Up
-        </Link>
+          Sign In / Sign Up
+        </a>
         <button
           type="button"
           onClick={toggleTheme}
