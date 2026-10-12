@@ -81,6 +81,7 @@ export default function EnquiryForm() {
       </p>
 
       <form action={formAction} noValidate className="space-y-5">
+        <input type="hidden" name="formType" value="Enquiry Modal / Section" />
         <div className="[&_label]:text-slate-300 [&_input]:bg-[#1A1A1A] [&_input]:border-white/10 [&_input]:text-white [&_input]:placeholder:text-slate-500 [&_textarea]:bg-[#1A1A1A] [&_textarea]:border-white/10 [&_textarea]:text-white [&_textarea]:placeholder:text-slate-500">
           <FormField
             label="Name"
