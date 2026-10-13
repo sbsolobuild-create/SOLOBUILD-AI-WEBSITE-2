@@ -86,27 +86,47 @@ export async function submitEnquiry(
       </p>
     </div>`;
 
+  // ── SMTP credential guard ────────────────────────────────────────────────
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const smtpPort = Number(process.env.SMTP_PORT) || 465;
+
+  if (!smtpUser || !smtpPass) {
+    console.error('--- CRITICAL SMTP ERROR ---');
+    console.error('SMTP_USER or SMTP_PASS is undefined in process.env!');
+    console.error('SMTP_USER loaded:', !!smtpUser);
+    console.error('SMTP_PASS loaded:', !!smtpPass);
+    console.error('---------------------------');
+    return { error: 'Server configuration error: Email credentials missing.' };
+  }
+
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.hostinger.com',
-    port: Number(process.env.SMTP_PORT) || 465,
-    secure: (Number(process.env.SMTP_PORT) || 465) === 465,
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465, // true for SSL/465, false for STARTTLS/587
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: smtpUser,
+      pass: smtpPass,
     },
+    connectionTimeout: 10000,
   });
 
   try {
     await transporter.sendMail({
-      from: `"SoloBuildAI Form Alerts" <${process.env.SMTP_USER || 'sb@solobuildai.com'}>`,
-      to: process.env.CONTACT_EMAIL || 'sb@solobuildai.com',
+      from: `"SoloBuildAI Form Alerts" <${smtpUser}>`,
+      to: process.env.CONTACT_EMAIL || 'contact@solobuildai.com',
       replyTo: email,
       subject: `[${formType}] Submission from ${name || email}`,
       html,
     });
     return { success: true, message: 'Thank you! Your submission has been received.' };
-  } catch (err) {
-    console.error('[submitEnquiry] SMTP error:', err);
-    return { error: 'Failed to send message. Please try again.' };
+  } catch (error) {
+    console.error('--- SMTP ERROR DETAILS ---');
+    console.error('Message:', (error as any)?.message);
+    console.error('Code:',    (error as any)?.code);
+    console.error('Response:',(error as any)?.response);
+    console.error('---------------------------');
+    return { error: (error as any)?.message || 'Failed to send message. Please try again.' };
   }
 }
