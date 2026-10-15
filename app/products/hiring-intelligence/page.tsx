@@ -1,9 +1,8 @@
 import PageLayout from "@/components/layout/PageLayout";
 import Link from "next/link";
+import { DASHBOARD_URL } from "@/lib/config";
 
 export const metadata = { title: "Hiring Intelligence — SoloBuildAI Products" };
-
-const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
 
 export default function HiringIntelligencePage() {
   return (
@@ -24,7 +23,7 @@ export default function HiringIntelligencePage() {
             </p>
             <div className="flex flex-wrap gap-3 mb-12">
               <a
-                href={SIGN_IN_URL}
+                href={DASHBOARD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition-colors shadow-sm"

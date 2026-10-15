@@ -32,11 +32,13 @@ export default function ChatComposer({
         onSubmit={handleSubmit}
         className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 shadow-sm focus-within:border-[#0066FF]/40 focus-within:ring-2 focus-within:ring-[#0066FF]/10 transition-all"
       >
-        {/* Attach */}
+        {/* Attach — not available in demo */}
         <button
           type="button"
-          aria-label="Attach a file"
-          className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 sm:flex"
+          aria-label="Attach a file (not available in this demo)"
+          title="File attachments are not available in the interactive demo"
+          disabled
+          className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 opacity-40 cursor-not-allowed sm:flex"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m20.5 11.5-7.75 7.75a5 5 0 0 1-7.07-7.07l8.13-8.13a3.5 3.5 0 1 1 4.95 4.95l-8.13 8.13a2 2 0 0 1-2.83-2.83l7.42-7.42" />
@@ -67,12 +69,13 @@ export default function ChatComposer({
           </svg>
         </button>
 
-        {/* Microphone — blue, pill-shaped, matches reference */}
+        {/* Microphone — not available in demo */}
         <button
           type="button"
-          aria-label="Voice input"
-          title="Voice input"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#0066FF] transition-colors hover:bg-blue-100"
+          aria-label="Voice input (not available in this demo)"
+          title="Voice input is not available in the interactive demo"
+          disabled
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#0066FF] opacity-40 cursor-not-allowed"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
             <rect x="9" y="2" width="6" height="11" rx="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -98,7 +101,7 @@ export default function ChatComposer({
       onSubmit={handleSubmit}
       className={`flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.03] p-2 transition-colors focus-within:border-[#0066FF]/60 ${compact ? "" : "shadow-[0_-10px_30px_rgba(0,0,0,0.15)]"}`}
     >
-      <button type="button" aria-label="Attach a file" className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-white/5 hover:text-white sm:flex">
+      <button type="button" aria-label="Attach a file (not available in this demo)" title="File attachments are not available in the interactive demo" disabled className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 opacity-40 cursor-not-allowed sm:flex">
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}>
           <path strokeLinecap="round" strokeLinejoin="round" d="m20.5 11.5-7.75 7.75a5 5 0 0 1-7.07-7.07l8.13-8.13a3.5 3.5 0 1 1 4.95 4.95l-8.13 8.13a2 2 0 0 1-2.83-2.83l7.42-7.42" />
         </svg>
@@ -121,9 +124,10 @@ export default function ChatComposer({
       </button>
       <button
         type="button"
-        aria-label="Voice input"
-        title="Voice input"
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-[#0066FF]/15 hover:text-[#0066FF]"
+        aria-label="Voice input (not available in this demo)"
+        title="Voice input is not available in the interactive demo"
+        disabled
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 opacity-40 cursor-not-allowed"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}>
           <rect x="9" y="2" width="6" height="11" rx="3" strokeLinecap="round" strokeLinejoin="round" />

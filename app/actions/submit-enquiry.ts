@@ -93,12 +93,9 @@ export async function submitEnquiry(
   const smtpPort = Number(process.env.SMTP_PORT) || 465;
 
   if (!smtpUser || !smtpPass) {
-    console.error('--- CRITICAL SMTP ERROR ---');
-    console.error('SMTP_USER or SMTP_PASS is undefined in process.env!');
-    console.error('SMTP_USER loaded:', !!smtpUser);
-    console.error('SMTP_PASS loaded:', !!smtpPass);
-    console.error('---------------------------');
-    return { error: 'Server configuration error: Email credentials missing.' };
+    // Log configuration errors server-side only — never expose details to the client.
+    console.error('[submit-enquiry] SMTP credentials missing — configure SMTP_USER and SMTP_PASS in your environment.');
+    return { error: 'Unable to send your message right now. Please email us directly at contact@solobuildai.com.' };
   }
 
   const transporter = nodemailer.createTransport({
@@ -122,11 +119,12 @@ export async function submitEnquiry(
     });
     return { success: true, message: 'Thank you! Your submission has been received.' };
   } catch (error) {
-    console.error('--- SMTP ERROR DETAILS ---');
-    console.error('Message:', (error as any)?.message);
-    console.error('Code:',    (error as any)?.code);
-    console.error('Response:',(error as any)?.response);
-    console.error('---------------------------');
-    return { error: (error as any)?.message || 'Failed to send message. Please try again.' };
+    // Log full details server-side; send only a safe message to the client.
+    const err = error as { code?: string; message?: string };
+    console.error('[submit-enquiry] SMTP send failed:', {
+      code: err?.code,
+      message: err?.message,
+    });
+    return { error: 'Failed to send your message. Please try again or email us at contact@solobuildai.com.' };
   }
 }

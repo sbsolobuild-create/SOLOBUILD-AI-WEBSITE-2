@@ -1,28 +1,50 @@
 "use client";
 
 import { useState } from "react";
-
-const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
+import { DASHBOARD_PATHS } from "@/lib/config";
 
 function isValidEmail(e: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 }
 
+/**
+ * Sign-in handoff component.
+ *
+ * Authentication is fully owned by the external dashboard application.
+ * This page's role is to validate the email format locally, then redirect the
+ * user to the dashboard's sign-in page — which handles credentials, sessions,
+ * OAuth, and MFA. No authentication happens here.
+ *
+ * Google / Microsoft buttons redirect to the same dashboard entry-point rather
+ * than initiating OAuth directly, because this landing page has no OAuth client
+ * configuration. The dashboard handles provider selection after arrival.
+ */
 export default function SigninFlow() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [navigating, setNavigating] = useState(false);
+
+  const dashboardSignIn = DASHBOARD_PATHS.signIn();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) { setError("Enter your work email to continue."); return; }
-    if (!isValidEmail(email)) { setError("Enter a valid email address."); return; }
-    setLoading(true);
-    // Redirect to the deployed hiring platform — auth is handled there
-    setTimeout(() => {
-      window.open(SIGN_IN_URL, "_blank", "noopener,noreferrer");
-      setLoading(false);
-    }, 400);
+    if (!email.trim()) {
+      setError("Enter your work email to continue.");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Enter a valid email address.");
+      return;
+    }
+
+    // Navigate to the dashboard — no fake delay, no auth performed here.
+    setNavigating(true);
+    window.location.href = dashboardSignIn;
+  }
+
+  function handleSSOClick() {
+    // The dashboard owns OAuth configuration. Redirect there for provider selection.
+    window.location.href = dashboardSignIn;
   }
 
   return (
@@ -49,7 +71,10 @@ export default function SigninFlow() {
             autoFocus
             autoComplete="email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); setError(""); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError("");
+            }}
             className={`w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-slate-500 bg-white/5 outline-none transition-all
               focus:ring-2 focus:ring-[#0066FF] focus:border-transparent
               ${error ? "border-red-400 focus:ring-red-400" : "border-white/15 hover:border-white/25"}`}
@@ -59,16 +84,16 @@ export default function SigninFlow() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={navigating}
           className="w-full py-3 bg-[#0066FF] text-white text-sm font-medium rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors flex items-center justify-center gap-2"
         >
-          {loading ? (
+          {navigating ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
           ) : null}
-          Continue
+          Continue to sign in
         </button>
       </form>
 
@@ -79,10 +104,11 @@ export default function SigninFlow() {
           <div className="flex-1 h-px bg-white/10" />
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3">
+          {/* Both SSO buttons send the user to the dashboard, which owns OAuth config */}
           <button
             type="button"
+            onClick={handleSSOClick}
             className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-white/15 rounded-lg text-sm font-medium text-white/80 hover:bg-white/5 transition-colors"
-            onClick={() => window.open(SIGN_IN_URL, "_blank", "noopener,noreferrer")}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -94,8 +120,8 @@ export default function SigninFlow() {
           </button>
           <button
             type="button"
+            onClick={handleSSOClick}
             className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-white/15 rounded-lg text-sm font-medium text-white/80 hover:bg-white/5 transition-colors"
-            onClick={() => window.open(SIGN_IN_URL, "_blank", "noopener,noreferrer")}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#F25022" d="M1 1h10v10H1z"/>

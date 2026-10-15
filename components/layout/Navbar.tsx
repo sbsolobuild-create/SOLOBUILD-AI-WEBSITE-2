@@ -833,7 +833,7 @@ function MobileMenu({ open, onClose, dark, onToggleTheme }: { open: boolean; onC
       </div>
 
       <div className={`border-t px-4 py-4 flex flex-col gap-3 ${dark ? "border-white/10" : "border-slate-200"}`}>
-        <a href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173'}/signin`} onClick={onClose} className={`w-full px-4 py-3 text-sm font-medium text-center transition-all rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white`}>
+        <a href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://main.d3ataamm8hxei7.amplifyapp.com'}/`} onClick={onClose} className={`w-full px-4 py-3 text-sm font-medium text-center transition-all rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white`}>
           Sign In / Sign Up
         </a>
         <button onClick={onToggleTheme} className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-center transition-colors rounded-xl ${dark ? "text-white hover:bg-white/5" : "text-slate-900 hover:bg-slate-100"}`}>
@@ -953,7 +953,7 @@ export default function Navbar({ framed = false }: { framed?: boolean }) {
       {/* ── Desktop right ────────────────────────────────────────────── */}
       <div className="hidden lg:flex items-center gap-3">
         <a
-          href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173'}/signin`}
+          href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://main.d3ataamm8hxei7.amplifyapp.com'}/`}
           className="inline-flex items-center px-4 py-2 text-[13px] font-medium rounded-lg transition-all bg-[#0066FF] hover:bg-[#0052CC] text-white"
         >
           Sign In / Sign Up

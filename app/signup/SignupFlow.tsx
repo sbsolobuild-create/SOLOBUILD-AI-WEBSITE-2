@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import BrandLogo from "@/components/layout/BrandLogo";
-
-const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
+import { submitEnquiry } from "@/app/actions/submit-enquiry";
+import { DASHBOARD_PATHS } from "@/lib/config";
 
 /* ─── Helpers ────────────────────────────────────────────────────────── */
 function isValidEmail(e: string) {
@@ -56,6 +56,8 @@ export default function SignupFlow() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   function toggleService(service: string) {
     setSelectedServices((prev) =>
@@ -85,7 +87,7 @@ export default function SignupFlow() {
     return errs;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -93,18 +95,41 @@ export default function SignupFlow() {
       cardRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    console.log("SignupFlow submission:", {
-      fullName,
-      email,
-      password,
-      confirmPassword,
-      company,
-      industry,
-      volume,
-      useCase,
-      selectedServices,
-    });
-    setSubmitted(true);
+    if (submitting) return; // prevent duplicate submissions
+    setSubmitting(true);
+    setServerError("");
+
+    // Build a FormData payload for the server action.
+    // Passwords are not submitted — they are only used for client-side
+    // confirmation and are never sent to a backend or logged.
+    const formData = new FormData();
+    formData.set("formType", "Sign-Up / Access Request");
+    formData.set("fullName", fullName);
+    formData.set("workEmail", email);
+    formData.set("company", company);
+    if (industry) formData.set("industry", industry);
+    if (volume) formData.set("volume", volume);
+    if (useCase) formData.set("useCase", useCase);
+    if (selectedServices.length > 0) {
+      formData.set("aiRequirements", selectedServices.join(", "));
+    }
+
+    try {
+      const result = await submitEnquiry(null, formData);
+      if (result && "success" in result && result.success) {
+        setSubmitted(true);
+      } else {
+        setServerError(
+          result && "error" in result
+            ? result.error
+            : "Something went wrong. Please try again."
+        );
+      }
+    } catch {
+      setServerError("Unable to submit. Please check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   /* ── Success state ── */
@@ -374,15 +399,31 @@ export default function SignupFlow() {
 
           {/* ── Submit ── */}
           <div className="pt-2 space-y-4">
+            {serverError && (
+              <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                {serverError}
+              </p>
+            )}
             <button
               type="submit"
-              className="w-full py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white text-sm font-medium rounded-lg transition-colors"
+              disabled={submitting}
+              className="w-full py-3 bg-[#0066FF] hover:bg-[#0052CC] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
-              Complete Registration &amp; Request Access
+              {submitting ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Submitting…
+                </>
+              ) : (
+                "Complete Registration & Request Access"
+              )}
             </button>
             <p className="text-sm text-center text-white/40">
               Already have an account?{" "}
-              <a href={SIGN_IN_URL} className="text-[#0066FF] hover:underline">
+              <a href={DASHBOARD_PATHS.signIn()} className="text-[#0066FF] hover:underline">
                 Sign in
               </a>
             </p>

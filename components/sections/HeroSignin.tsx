@@ -41,9 +41,9 @@ export default function HeroSignin() {
               Build, deploy and scale AI agents, workflows and tools to turn your ideas into real outcomes — without the usual complexity.
             </p>
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-neutral-200 font-mono">
-              <span>// No coding required</span>
-              <span>// Ready-to-use agents</span>
-              <span>// Built for real hiring</span>
+              <span>{'// No coding required'}</span>
+              <span>{'// Ready-to-use agents'}</span>
+              <span>{'// Built for real hiring'}</span>
             </div>
           </div>
 
@@ -136,8 +136,8 @@ export default function HeroSignin() {
             </div>
           </div>
           <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-neutral-200 font-mono">
-            <span>// No coding required</span>
-            <span>// Ready-to-use agents</span>
+            <span>{'// No coding required'}</span>
+            <span>{'// Ready-to-use agents'}</span>
           </div>
         </div>
       </div>

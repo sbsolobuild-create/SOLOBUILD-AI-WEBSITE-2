@@ -105,6 +105,9 @@ export default function ChatbotShell({
     setSidebarOpen(false);
   }
 
+  // The chatbot is a frontend-only interactive demonstration.
+  // It uses pre-built demo responses to illustrate the assistant UX.
+  // No API endpoint is called here; responses are generated from demo data.
   function submitMessage(content: string) {
     const activeSolution = getSolution(selectedSolution);
     setMessages((current) => [

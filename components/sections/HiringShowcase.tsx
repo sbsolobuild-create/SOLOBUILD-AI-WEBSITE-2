@@ -4,8 +4,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const SIGN_IN_URL = "https://main.d3ataamm8hxei7.amplifyapp.com/";
+import { DASHBOARD_URL } from "@/lib/config";
 
 export default function HiringShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -75,7 +74,7 @@ export default function HiringShowcase() {
               <Link href="/solutions/hiring" className="btn-glow px-6 py-3 text-white text-sm font-medium rounded-xl transition-colors shadow-sm" style={{ backgroundColor: "#2563eb" }}>
                 Explore AI for Hiring
               </Link>
-              <a href={SIGN_IN_URL} target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-sm font-medium rounded-xl transition-colors" style={{ color: "#94a3c4", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)" }}>
+              <a href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-sm font-medium rounded-xl transition-colors" style={{ color: "#94a3c4", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)" }}>
                 Open Hiring Platform
               </a>
             </div>

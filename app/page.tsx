@@ -6,6 +6,7 @@ import concreteBuildingImage from "@/app/file_00000000f12481fba98e0793f2268462.p
 import AgentRailSection from "@/components/sections/AgentRailSection";
 import AIAssistantShowcase from "@/components/sections/AIAssistantShowcase";
 import HeroSignin from "@/components/sections/HeroSignin";
+import { DASHBOARD_URL } from "@/lib/config";
 
 const STEPS = [
   { num: "01", title: "Describe", desc: "Tell us the role and who you want to reach." },
@@ -288,7 +289,7 @@ export default function HomePage() {
             <p className="text-[13px] text-white/85 mt-8">Your next hire is just one agent away.</p>
           </Link>
           <a
-            href="https://main.d3ataamm8hxei7.amplifyapp.com/"
+            href={DASHBOARD_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 text-[13px] font-medium text-white/90 hover:text-white inline-flex items-center gap-2"

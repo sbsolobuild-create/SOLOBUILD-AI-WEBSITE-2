@@ -1,4 +1,5 @@
 ﻿import { ChatMessage, ChatbotContextConfig, ConnectedTool, RecentChat, SolutionContext, SolutionId } from "./types";
+import { DASHBOARD_PATHS } from "@/lib/config";
 
 export const CHATBOT_CONTEXTS: Record<string, ChatbotContextConfig> = {
   "talent-acquisition": {
@@ -7,12 +8,12 @@ export const CHATBOT_CONTEXTS: Record<string, ChatbotContextConfig> = {
     name: "Talent Acquisition",
     landingHref: "/solutions/hr/talent-acquisition",
     menuItems: [
-      { id: "hiring", name: "Hiring", href: "https://solobuildai.vercel.app/", external: true },
-      { id: "candidates", name: "Candidates", href: "https://solobuildai.vercel.app/candidates", external: true },
-      { id: "screening-reports", name: "Screening Reports", href: "https://solobuildai.vercel.app/screening-reports", external: true },
-      { id: "ai-recruiters", name: "AI Recruiters", href: "https://solobuildai.vercel.app/recruiters", external: true },
-      { id: "interviews", name: "Interviews", href: "https://solobuildai.vercel.app/interviews", external: true },
-      { id: "activity", name: "Activity", href: "https://solobuildai.vercel.app/activity", external: true },
+      { id: "hiring", name: "Hiring", href: DASHBOARD_PATHS.hiring(), external: true },
+      { id: "candidates", name: "Candidates", href: DASHBOARD_PATHS.candidates(), external: true },
+      { id: "screening-reports", name: "Screening Reports", href: DASHBOARD_PATHS.screeningReports(), external: true },
+      { id: "ai-recruiters", name: "AI Recruiters", href: DASHBOARD_PATHS.recruiters(), external: true },
+      { id: "interviews", name: "Interviews", href: DASHBOARD_PATHS.interviews(), external: true },
+      { id: "activity", name: "Activity", href: DASHBOARD_PATHS.activity(), external: true },
     ],
   },
   "employee-onboarding": {
